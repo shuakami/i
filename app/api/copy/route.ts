@@ -56,8 +56,8 @@ export async function GET() {
     const activity = activityDataArr.length > 0 ? activityDataArr[0] : null;
 
     // 2. 使用工具函数处理数据
-    // !! 修正时间戳单位：从纳秒转换为毫秒
-    const timeSinceLastHR = heartRate ? Date.now() - heartRate.last_timestamp / 1_000_000 : Infinity;
+    // !! 时间戳单位为毫秒，直接计算
+    const timeSinceLastHR = heartRate ? Date.now() - heartRate.last_timestamp : Infinity;
     const isRecentHR = timeSinceLastHR < 300000; // 5 分钟
 
     const aliveStatus = getAliveStatus(heartRate, isRecentHR);
