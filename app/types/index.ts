@@ -124,4 +124,31 @@ export enum ActivitySubType {
   SYSTEM_COMPILING = "system_compiling",
   SYSTEM_RENDERING = "system_rendering",
   SYSTEM_UPDATING = "system_updating",
-} 
+}
+
+export interface SportsActivity {
+  id: string;
+  type: string;
+  start_time: string; // TIMESTAMPTZ is a string in JSON
+  end_time: string;   // TIMESTAMPTZ is a string in JSON
+  total_time: number; // REAL can be number
+  total_distance: number;
+  start_latitude: number;
+  start_longitude: number;
+  moving_time: number;
+  average_speed: number;
+  average_heartrate: number;
+  elevation_gain: number;
+  sync_time: string; // TIMESTAMPTZ is a string in JSON
+}
+
+export interface ActivityTrackPoint {
+  latitude: number;
+  longitude: number;
+  timestamp: string;
+  altitude: number;
+}
+
+export interface SportsActivityDetailed extends SportsActivity {
+  track_points: ActivityTrackPoint[];
+}
