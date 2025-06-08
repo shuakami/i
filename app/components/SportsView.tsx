@@ -117,13 +117,13 @@ const SportsView = forwardRef<HTMLDivElement, SportsViewProps>(({ isActive, onAc
             className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter text-black dark:text-white"
             style={{ animation: 'fadeInUp 0.6s ease-out', animationFillMode: 'both' }}
           >
-            运动记录
+            运动
           </h1>
           <p 
             className="text-lg text-neutral-500 dark:text-neutral-400 mt-4"
             style={{ animation: 'fadeInUp 0.7s ease-out 0.1s', animationFillMode: 'both' }}
           >
-            你的每一次努力，都值得被记录。
+            Sports
           </p>
         </div>
         
