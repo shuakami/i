@@ -1,7 +1,7 @@
 import React, { useEffect, forwardRef } from 'react';
 import { useSportsData } from '../hooks/useSportsData';
 import type { SportsActivity } from '../types';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import ActivityDetailModal from './ActivityDetailModal';
 import StatsSummary from './StatsSummary';
 import ActivityItemSkeleton from './ActivityItemSkeleton';
@@ -146,8 +146,15 @@ const SportsView = forwardRef<HTMLDivElement, SportsViewProps>(({ isActive, onAc
               <ActivityItemSkeleton />
             </>
           ) : (
-            activities.map(act => (
-              <ActivityItem key={act.id} activity={act} onClick={() => onActivitySelect(act.id)} />
+            activities.map((act, index) => (
+              <motion.div
+                key={act.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, ease: 'easeOut', delay: index * 0.05 }}
+              >
+                <ActivityItem activity={act} onClick={() => onActivitySelect(act.id)} />
+              </motion.div>
             ))
           )}
         </div>
