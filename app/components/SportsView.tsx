@@ -48,7 +48,7 @@ const ActivityItem: React.FC<{ activity: SportsActivity; onClick: () => void }> 
   return (
     <div 
       onClick={onClick}
-      className="flex gap-4 items-start py-6 border-t border-neutral-200 dark:border-neutral-800 -mx-6 px-6 transition-colors duration-300 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 cursor-pointer"
+      className="flex gap-4 items-start py-6 -mx-6 px-6 transition-colors duration-300 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 cursor-pointer"
     >
       {/* Date */}
       <div className="text-center w-14 flex-shrink-0">
@@ -149,6 +149,7 @@ const SportsView = forwardRef<HTMLDivElement, SportsViewProps>(({ isActive, onAc
             activities.map((act, index) => (
               <motion.div
                 key={act.id}
+                className="border-t border-neutral-200 dark:border-neutral-800"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, ease: 'easeOut', delay: index * 0.05 }}
