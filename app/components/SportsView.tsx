@@ -118,7 +118,7 @@ const SportsView = forwardRef<HTMLDivElement, SportsViewProps>(({ isActive, onAc
 
     const { scrollTop, scrollHeight, clientHeight } = ref.current;
     const isAtTop = scrollTop === 0;
-    const isAtBottom = scrollHeight - scrollTop === clientHeight;
+    const isAtBottom = scrollHeight - scrollTop <= clientHeight + 1;
 
     // If scrolling up but not at top, or scrolling down but not at bottom, stop propagation.
     if ((e.deltaY < 0 && !isAtTop) || (e.deltaY > 0 && !isAtBottom)) {
@@ -138,7 +138,7 @@ const SportsView = forwardRef<HTMLDivElement, SportsViewProps>(({ isActive, onAc
     const deltaY = currentTouchY - touchStartY.current;
 
     const isAtTop = scrollTop === 0;
-    const isAtBottom = Math.ceil(scrollHeight - scrollTop) === clientHeight;
+    const isAtBottom = scrollHeight - scrollTop <= clientHeight + 1;
     
     if ((deltaY > 0 && !isAtTop) || (deltaY < 0 && !isAtBottom)) {
       e.stopPropagation();
