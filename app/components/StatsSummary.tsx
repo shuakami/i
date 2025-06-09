@@ -47,16 +47,16 @@ const StatCard: React.FC<{ label: string; value: number; unit: string; isVisible
     }, [isVisible, controls]);
 
     return (
-        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-neutral-100 dark:bg-neutral-900">
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">{label}</p>
-            <div className="flex items-baseline mt-1">
+        <div className="flex flex-row justify-between items-center rounded-lg bg-neutral-100 dark:bg-neutral-900 p-4 sm:flex-col sm:justify-center sm:p-4">
+            <p className="text-sm sm:text-xs text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">{label}</p>
+            <div className="flex items-baseline sm:mt-1">
                 <motion.p 
-                    className="text-3xl font-bold text-black dark:text-white"
+                    className="text-2xl sm:text-3xl font-bold text-black dark:text-white"
                     animate={controls}
                 >
                     {isTime ? formatDuration(value) : animatedValue}
                 </motion.p>
-                <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400 ml-1">{unit}</p>
+                <p className="text-xs sm:text-sm font-medium text-neutral-500 dark:text-neutral-400 ml-0.5 sm:ml-1">{unit}</p>
             </div>
         </div>
     );
@@ -65,7 +65,7 @@ const StatCard: React.FC<{ label: string; value: number; unit: string; isVisible
 const StatsDisplay: React.FC<{ stats: SportStats; isVisible: boolean }> = ({ stats, isVisible }) => {
     return (
         <motion.div
-            className="grid grid-cols-3 gap-2 md:gap-4"
+            className="flex flex-col gap-3 sm:grid sm:grid-cols-3 sm:gap-4"
         >
             <StatCard label="距离" value={stats.totalDistance / 1000} unit="km" isVisible={isVisible} />
             <StatCard label="时长" value={stats.totalTime} unit="" isTime={true} isVisible={isVisible} />

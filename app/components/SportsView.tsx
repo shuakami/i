@@ -1,4 +1,4 @@
-import React, { useEffect, forwardRef, UIEvent } from 'react';
+import React, { useEffect, forwardRef, UIEvent, useRef } from 'react';
 import { useSportsData } from '../hooks/useSportsData';
 import type { SportsActivity } from '../types';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -48,11 +48,11 @@ const ActivityItem: React.FC<{ activity: SportsActivity; onClick: () => void }> 
   return (
     <div 
       onClick={onClick}
-      className="flex gap-4 items-start py-6 -mx-6 px-6 transition-colors duration-300 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 cursor-pointer"
+      className="flex gap-3 sm:gap-4 items-start py-6 -mx-4 sm:-mx-6 px-4 sm:px-6 transition-colors duration-300 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 cursor-pointer"
     >
       {/* Date */}
       <div className="text-center w-14 flex-shrink-0">
-        <p className="text-3xl font-bold text-black dark:text-white">{day}</p>
+        <p className="text-2xl sm:text-3xl font-bold text-black dark:text-white">{day}</p>
         <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase">{month}</p>
       </div>
       
@@ -60,17 +60,17 @@ const ActivityItem: React.FC<{ activity: SportsActivity; onClick: () => void }> 
       <div className="flex-1 w-full">
         {/* Type and secondary stats on top for mobile */}
         <div className="flex items-start justify-between mb-2">
-            <div className="flex items-center gap-2 text-lg font-bold tracking-tight text-black dark:text-white">
+            <div className="flex items-center gap-2 text-base sm:text-lg font-bold tracking-tight text-black dark:text-white">
               <SportIcon type={activity.type} />
               {activity.type}
             </div>
 
-            <div className="flex gap-x-4 text-right text-sm">
-                <div className="min-w-[4rem]">
+            <div className="flex gap-x-3 sm:gap-x-4 text-right text-sm">
+                <div className="min-w-[3.5rem] sm:min-w-[4rem]">
                     <div className="font-semibold text-black dark:text-white">{formatDuration(activity.total_time)}</div>
                     <div className="text-xs text-neutral-500 dark:text-neutral-400 uppercase">时长</div>
                 </div>
-                 <div className="min-w-[4rem]">
+                 <div className="min-w-[3.5rem] sm:min-w-[4rem]">
                     {isRunOrWalk ? (
                         <>
                             <div className="font-semibold text-black dark:text-white">{formatPace(activity.average_speed)}</div>
@@ -88,10 +88,10 @@ const ActivityItem: React.FC<{ activity: SportsActivity; onClick: () => void }> 
 
         {/* Hero stat */}
         <div className="leading-none">
-          <span className="text-6xl md:text-7xl font-bold tracking-tighter text-black dark:text-white">
+          <span className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter text-black dark:text-white">
             {(activity.total_distance / 1000).toFixed(2)}
           </span>
-          <span className="text-xl ml-1 font-medium text-neutral-500 dark:text-neutral-400">km</span>
+          <span className="text-lg sm:text-xl ml-1 font-medium text-neutral-500 dark:text-neutral-400">km</span>
         </div>
       </div>
     </div>
@@ -105,6 +105,7 @@ interface SportsViewProps {
 
 const SportsView = forwardRef<HTMLDivElement, SportsViewProps>(({ isActive, onActivitySelect }, ref) => {
   const { activities, isLoading, hasMore, loadMore, initialLoad, error } = useSportsData();
+  const touchStartY = useRef(0);
 
   useEffect(() => {
     if (isActive) {
@@ -125,24 +126,45 @@ const SportsView = forwardRef<HTMLDivElement, SportsViewProps>(({ isActive, onAc
     }
   };
 
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!ref || typeof ref === 'function' || !ref.current) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = ref.current;
+    const currentTouchY = e.touches[0].clientY;
+    const deltaY = currentTouchY - touchStartY.current;
+
+    const isAtTop = scrollTop === 0;
+    const isAtBottom = Math.ceil(scrollHeight - scrollTop) === clientHeight;
+    
+    if ((deltaY > 0 && !isAtTop) || (deltaY < 0 && !isAtBottom)) {
+      e.stopPropagation();
+    }
+  };
+
   const isInitialLoading = isLoading && activities.length === 0;
 
   return (
     <div 
       ref={ref} 
       onWheel={handleWheel}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
       className="h-screen w-full flex-shrink-0 relative overflow-y-auto bg-neutral-50 dark:bg-black p-4 scroll-smooth"
     >
-      <div className="max-w-4xl mx-auto px-6 pt-20 pb-24">
-        <div className="mb-8 -mx-6">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-20 pb-24">
+        <div className="mb-8 -mx-4 sm:-mx-6">
           <h1 
-            className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter text-black dark:text-white"
+            className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tighter text-black dark:text-white"
             style={{ animation: 'fadeInUp 0.6s ease-out', animationFillMode: 'both' }}
           >
             运动
           </h1>
           <p 
-            className="text-lg text-neutral-500 dark:text-neutral-400 mt-4"
+            className="text-base sm:text-lg text-neutral-500 dark:text-neutral-400 mt-4"
             style={{ animation: 'fadeInUp 0.7s ease-out 0.1s', animationFillMode: 'both' }}
           >
             Sports
@@ -150,7 +172,7 @@ const SportsView = forwardRef<HTMLDivElement, SportsViewProps>(({ isActive, onAc
         </div>
         
         {/* Wrap StatsSummary to align with the list items below */}
-        <div className="py-8 -mx-6">
+        <div className="py-8 -mx-4 sm:-mx-6">
           <StatsSummary />
         </div>
 

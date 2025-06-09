@@ -34,9 +34,9 @@ const LiveHeartRateDisplay = ({ value, isHovering }: { value: number, isHovering
     }, [animatedValue, roundedValue]);
 
     return (
-        <div className="absolute top-20 right-6 md:right-10 text-right pointer-events-none">
+        <div className="absolute top-20 right-4 sm:right-6 md:right-10 text-right pointer-events-none">
              <motion.p 
-                className="text-7xl lg:text-8xl font-bold tracking-tighter text-black dark:text-white"
+                className="text-6xl sm:text-7xl lg:text-8xl font-bold tracking-tighter text-black dark:text-white"
                 animate={{ 
                     color: isHovering ? '#f87171' : (document.documentElement.classList.contains('dark') ? '#FFFFFF' : '#000000'),
                     scale: isHovering ? 1.05 : 1
@@ -117,17 +117,17 @@ const HeartRateView = forwardRef<HTMLDivElement, HeartRateViewProps>(({ isActive
 
             <div className="h-full w-full overflow-y-auto p-4 scroll-smooth">
                 <motion.div 
-                    className="max-w-4xl mx-auto px-6 pt-20 pb-24 min-h-full flex flex-col justify-between"
+                    className="max-w-4xl mx-auto px-4 sm:px-6 pt-20 pb-24 min-h-full flex flex-col justify-between"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
                 >
                     <motion.div variants={itemVariants}>
-                        <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter text-black dark:text-white">心率</h1>
+                        <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tighter text-black dark:text-white">心率</h1>
                         <p className="text-lg text-neutral-500 dark:text-neutral-400 mt-2">{targetDate.format('YYYY年MM月DD日')}</p>
                     </motion.div>
 
-                    <div className="flex-grow flex items-center justify-center -mx-6">
+                    <div className="flex-grow flex items-center justify-center -mx-4 sm:-mx-6">
                         {isLoading ? (
                             <div className="w-full h-96 bg-neutral-200 dark:bg-neutral-800 rounded-2xl animate-pulse" />
                         ) : error ? (
