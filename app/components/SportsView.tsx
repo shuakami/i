@@ -1,4 +1,4 @@
-import React, { useEffect, forwardRef } from 'react';
+import React, { useEffect, forwardRef, UIEvent } from 'react';
 import { useSportsData } from '../hooks/useSportsData';
 import type { SportsActivity } from '../types';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -112,10 +112,27 @@ const SportsView = forwardRef<HTMLDivElement, SportsViewProps>(({ isActive, onAc
     }
   }, [isActive, initialLoad]);
 
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (!ref || typeof ref === 'function' || !ref.current) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = ref.current;
+    const isAtTop = scrollTop === 0;
+    const isAtBottom = scrollHeight - scrollTop === clientHeight;
+
+    // If scrolling up but not at top, or scrolling down but not at bottom, stop propagation.
+    if ((e.deltaY < 0 && !isAtTop) || (e.deltaY > 0 && !isAtBottom)) {
+      e.stopPropagation();
+    }
+  };
+
   const isInitialLoading = isLoading && activities.length === 0;
 
   return (
-    <div ref={ref} className="h-screen w-full flex-shrink-0 relative overflow-y-auto bg-neutral-50 dark:bg-black p-4 scroll-smooth">
+    <div 
+      ref={ref} 
+      onWheel={handleWheel}
+      className="h-screen w-full flex-shrink-0 relative overflow-y-auto bg-neutral-50 dark:bg-black p-4 scroll-smooth"
+    >
       <div className="max-w-4xl mx-auto px-6 pt-20 pb-24">
         <div className="mb-8 -mx-6">
           <h1 

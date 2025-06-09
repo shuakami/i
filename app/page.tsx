@@ -16,6 +16,7 @@ import SportsView from './components/SportsView';
 import FooterBar from './components/FooterBar';
 import GlobalStyles from './components/GlobalStyles';
 import ActivityDetailModal from './components/ActivityDetailModal';
+import HeartRateView from './components/HeartRateView';
 
 // Utils & Types
 import { getAliveStatus } from './lib/statusUtils';
@@ -24,6 +25,7 @@ import type { ActivityDetails } from './types';
 
 export default function StatusPage() {
   const sportsViewRef = useRef<HTMLDivElement>(null);
+  const heartRateViewRef = useRef<HTMLDivElement>(null);
   const [selectedActivityId, setSelectedActivityId] = useState<string | null>(null);
 
   // --- HOOKS ---
@@ -121,6 +123,7 @@ export default function StatusPage() {
             isActive={currentPage === 2} 
             onActivitySelect={setSelectedActivityId}
           />
+          <HeartRateView ref={heartRateViewRef} isActive={currentPage === 3} />
         </div>
 
         <FooterBar 

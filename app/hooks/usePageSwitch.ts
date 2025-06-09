@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback, RefObject } from 'react';
 
-const MAX_PAGES = 3;
+const MAX_PAGES = 4;
 
 export function usePageSwitch(initialPage = 0, scrollableContainerRef: RefObject<HTMLElement>) {
   const [currentPage, setCurrentPage] = useState(initialPage);
@@ -19,7 +19,7 @@ export function usePageSwitch(initialPage = 0, scrollableContainerRef: RefObject
     const touch = e.changedTouches[0];
     const finalDiffY = touchStart.y - touch.clientY;
     
-    // On page 3, only allow swipe up if scroll is at top
+    // On scrollable pages (page 2), only allow swipe up if scroll is at top
     if (currentPage === 2 && finalDiffY < 0) { // Swiping down (to go up a page)
         if (scrollableContainerRef.current && scrollableContainerRef.current.scrollTop > 0) {
             setTouchStart(null);
@@ -47,7 +47,7 @@ export function usePageSwitch(initialPage = 0, scrollableContainerRef: RefObject
   }, [touchStart, isScrolling, currentPage, scrollableContainerRef]);
 
   const handleWheel = useCallback((e: React.WheelEvent) => {
-    // On page 3, only allow scroll up if scroll is at top
+    // On scrollable pages (page 2), only allow scroll up if scroll is at top
     if (currentPage === 2 && e.deltaY < 0) {
         if (scrollableContainerRef.current && scrollableContainerRef.current.scrollTop > 0) {
             return; // Don't prevent default, allow native scroll

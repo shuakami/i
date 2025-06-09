@@ -15,7 +15,7 @@ const FooterBar: React.FC<FooterBarProps> = ({ activity, lastUpdate, currentPage
   return (
     <div className="fixed bottom-8 left-8 right-8 z-20 pointer-events-none">
       <AnimatePresence>
-        {currentPage !== 2 && (
+        {currentPage !== 2 && currentPage !== 3 && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -73,6 +73,15 @@ const FooterBar: React.FC<FooterBarProps> = ({ activity, lastUpdate, currentPage
                       ? (theme === 'dark' ? 'white' : 'black')
                       : 'rgba(156, 163, 175, 0.5)',
                     transform: currentPage === 2 ? 'scale(1.2)' : 'scale(1)',
+                  }}
+                />
+                <div
+                  className="w-2 h-2 rounded-full transition-all duration-300"
+                  style={{
+                    backgroundColor: currentPage === 3
+                      ? (theme === 'dark' ? 'white' : 'black')
+                      : 'rgba(156, 163, 175, 0.5)',
+                    transform: currentPage === 3 ? 'scale(1.2)' : 'scale(1)',
                   }}
                 />
               </div>
