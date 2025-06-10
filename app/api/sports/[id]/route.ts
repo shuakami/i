@@ -19,11 +19,11 @@ export async function GET(
     // Fetch activity and track points in parallel
     const [activityRes, trackPointsRes] = await Promise.all([
       supabase.from('activities').select('*').eq('id', id).single(),
-      supabase.from('activity_track_points').select('latitude, longitude, timestamp').eq('activity_id', id).order('timestamp', { ascending: true })
+      supabase.from('activity_track_points').select('latitude, longitude, timestamp').eq('activity_id', id)
     ]);
     
-    const { data: activity, error: activityError } = activityRes;
-    const { data: trackPoints, error: trackPointsError } = trackPointsRes;
+    let { data: activity, error: activityError } = activityRes;
+    let { data: trackPoints, error: trackPointsError } = trackPointsRes;
 
     if (activityError) {
       // If single() doesn't find a row, it returns an error. Handle this as a 404.
@@ -36,6 +36,11 @@ export async function GET(
     if (trackPointsError) {
       // It's okay if track points fail, we can still return the activity.
       console.error(`Failed to fetch track points for activity ${id}:`, trackPointsError);
+    }
+    
+    // Manually sort track points by timestamp numerically
+    if (trackPoints) {
+      trackPoints.sort((a, b) => Number(a.timestamp) - Number(b.timestamp));
     }
 
     return NextResponse.json({
