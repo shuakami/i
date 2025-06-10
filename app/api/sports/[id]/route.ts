@@ -19,7 +19,7 @@ export async function GET(
     // Fetch activity and track points in parallel
     const [activityRes, trackPointsRes] = await Promise.all([
       supabase.from('activities').select('*').eq('id', id).single(),
-      supabase.from('activity_track_points').select('latitude, longitude, timestamp, altitude').eq('activity_id', id).order('timestamp', { ascending: true })
+      supabase.from('activity_track_points').select('latitude, longitude, timestamp').eq('activity_id', id).order('timestamp', { ascending: true })
     ]);
     
     const { data: activity, error: activityError } = activityRes;
